@@ -172,9 +172,13 @@ class PatientController extends Controller
     // menampilkan data yang akan dicari
     public function search(Request $request)
     {
-        $patient = Patient::where('name')->get();
+        // mendapatkan nama yang akan dicari
+        $name = $request->input('name'); 
 
-        // menghandle data yg tidak ada
+        // mencari nama yang sesuai
+        $patient = Patient::where('name', 'like', '%' . $name . '%')->get();
+
+        // menghandle jika data tidak ada
         if ($patient) {
             $data = [
                 'message'=> 'Get searched patient',
@@ -185,7 +189,6 @@ class PatientController extends Controller
             return response()->json($data, 200);
         }
 
-        // handling data yang tidak ada
         else {
             $data = [
                 'message'=> 'Patient not found'
@@ -199,10 +202,10 @@ class PatientController extends Controller
     // menampilkan data pasien positif
     public function positive(Request $request)
     {
-        $patients = Patient::where('status' == 'positive')->get();
+        $patients = Patient::where('status', 'Positive')->get();
 
-        // menghandle data yg tidak adaa
-        if ($patients) {
+        // menghandle data yg tidak ada
+        if ($patients->count() > 0) {
             $data = [
                 'message'=> 'Get positive patients',
                 'data' => $patients
@@ -226,10 +229,10 @@ class PatientController extends Controller
     // menampilkan data pasien yang sembuh
     public function recovered(Request $request)
     {
-        $patients = Patient::where('status' == 'recovered')->get();
+        $patients = Patient::where('status', 'Recovered')->get();
 
         // menghandle data yg tidak ada
-        if ($patients) {
+        if ($patients ->count() > 0) {
             $data = [
                 'message'=> 'Get recovered patients',
                 'data' => $patients
@@ -253,10 +256,10 @@ class PatientController extends Controller
     // menampilkan data pasien yang meninggal
     public function dead(Request $request)
     {
-        $patients = Patient::where('status' == 'dead')->get();
+        $patients = Patient::where('status', 'Dead')->get();
 
         // menghandle data yang akan ditampilkan
-        if ($patients) {
+        if ($patients->count() > 0) {
             $data = [
                 'message'=> 'Get dead patients',
                 'data'=> $patients
