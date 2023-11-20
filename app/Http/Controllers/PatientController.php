@@ -170,11 +170,8 @@ class PatientController extends Controller
     }
 
     // menampilkan data yang akan dicari
-    public function search(Request $request)
+    public function search(Request $request, $name)
     {
-        // mendapatkan nama yang akan dicari
-        $name = $request->input('name'); 
-
         // mencari nama yang sesuai
         $patient = Patient::where('name', 'like', '%' . $name . '%')->get();
 
